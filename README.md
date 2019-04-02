@@ -9,7 +9,7 @@
 * install dependences: `npm i`
 
 ## Development
-To start the server, simply run `npm run start-server`. 
+To start the server, simply run `npm run start`. 
 The server should run at `localhost:8000`
 
 ### pre-commit
