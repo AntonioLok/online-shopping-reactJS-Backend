@@ -13,6 +13,6 @@ To start the server, simply run `npm run start-server`.
 The server should run at `localhost:8000`
 
 ### pre-commit
-Before each commit, only code quality (eslint) and sass-lint checks will be made. 
+Before each commit, only code quality (eslint) checks will be made. 
 The following command will be run:
 `npm run precommit`
