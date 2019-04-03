@@ -1,5 +1,3 @@
-const _ = require('lodash');
-
 const handleSuccess = (res, status, data = null) => {
   let statusCode = status;
   let statusText;
