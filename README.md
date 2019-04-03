@@ -5,7 +5,7 @@
 * NPM 6.x
 
 ## Project setup
-* clone repository: `git clone https://github.com/AntonioLok/online-shopping-reactJS.git`
+* clone repository: `git clone https://github.com/AntonioLok/online-shopping-reactJS-Backend.git`
 * install dependences: `npm i`
 
 ## Development
