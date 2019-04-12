@@ -1,15 +1,14 @@
-FROM node:8
+FROM node:9-slim
 
 # Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-COPY package*.json ./
-
-RUN npm install
+WORKDIR /usr/app
 
 # Bundle app source
-COPY . .
+COPY ./package*.json /usr/app/
+COPY ./src /usr/app/src/
+
+# Install app dependencies
+RUN NODE_ENV=production npm install
 
 EXPOSE 8000
 
