@@ -9,6 +9,10 @@
     "eslint": "gulp eslint",
     "precommit": "npm run eslint"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AntonioLok/online-shopping-reactJS-Backend"
+  },
   "keywords": [],
   "author": "Antonio Lok Chan",
   "license": "ISC",
