@@ -6,7 +6,7 @@ const register = async (username, password) => {
     newUser.username = username;
     newUser.password = await User.generatePasswordHash(password);
 
-    return await newUser.save().then(user => user);
+    await newUser.save();
   } catch (error) {
     throw new Error(error);
   }
