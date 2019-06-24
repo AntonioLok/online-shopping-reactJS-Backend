@@ -1,0 +1,14 @@
+branch-defaults:
+  deployment:
+    environment: OnlineShoppingStoreApi-env
+global:
+  application_name: online-shopping-store-api
+  default_ec2_keyname: null
+  default_platform: arn:aws:elasticbeanstalk:ca-central-1::platform/Docker running on
+    64bit Amazon Linux/2.12.14
+  default_region: ca-central-1
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  sc: git
