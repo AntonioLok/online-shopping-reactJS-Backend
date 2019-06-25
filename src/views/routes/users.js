@@ -18,17 +18,17 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { token, userExists } = await generateToken(email, password);
+    const token = await generateToken(email, password);
 
-    if (!userExists) {
-      return responseHandler.handleError(res, 404, 'The user is not registered');
-    }
-    if (!token) {
-      return responseHandler.handleError(res, 401, 'Password incorrect');
-    }
     responseHandler.handleSuccess(res, 200, token);
   } catch (error) {
-    responseHandler.handleError(res, 500);
+    const { message } = error;
+
+    if (message.includes('The user is not registered') || message.includes('Password is incorrect')) {
+      responseHandler.handleError(res, 401, message);
+    } else {
+      responseHandler.handleError(res, 500);
+    }
   }
 });
 
