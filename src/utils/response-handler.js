@@ -1,17 +1,21 @@
+const constants = require('../constants');
+
+const { success, error } = constants.httpResponse;
+
 const handleSuccess = (res, status, data = null) => {
   let statusCode = status;
   let statusText;
 
   switch (status) {
-    case 200:
-      statusText = 'SUCCESS';
+    case success.success.CODE:
+      statusText = success.success.STATUS_TEXT;
       break;
-    case 201:
-      statusText = 'CREATED';
+    case success.created.CODE:
+      statusText = success.created.STATUS_TEXT;
       break;
     default:
-      statusCode = 200;
-      statusText = 'SUCCESS';
+      statusCode = success.success.CODE;
+      statusText = success.success.STATUS_TEXT;
       break;
   }
 
@@ -24,34 +28,37 @@ const handleError = (res, status, message = null) => {
   let statusText;
   let msg = '';
 
-
   switch (statusCode) {
-    case 400:
-      statusText = 'BAD_REQUEST';
-      msg = message || 'The request was malformed or missing a required parameter.';
-      break;
-    case 401:
-      statusText = 'UNAUTHORIZED';
-      msg = message || 'The authorization credentials provided are insufficient.';
-      break;
-    case 403:
-      statusText = 'FORBIDDEN';
-      msg = message || 'You dont have permission to access [directory] on this server';
-      break;
-    case 404:
-      statusText = 'NOT_FOUND';
-      msg = message || 'The requested resource or endpoint was not found.';
-      break;
-    case 409:
-      statusText = 'CONFLICT';
-      msg = message || 'The entity to be created already exists.';
+    case error.badRequest.CODE:
+      statusText = error.badRequest.STATUS_TEXT;
+      msg = message || error.badRequest.DEFAULT_MSG;
       break;
 
-    case 500:
+    case error.unauthorized.CODE:
+      statusText = error.unauthorized.STATUS_TEXT;
+      msg = message || error.unauthorized.DEFAULT_MSG;
+      break;
+
+    case error.forbidden.CODE:
+      statusText = error.forbidden.STATUS_TEXT;
+      msg = message || error.forbidden.DEFAULT_MSG;
+      break;
+
+    case error.notFound.CODE:
+      statusText = error.notFound.STATUS_TEXT;
+      msg = message || error.notFound.DEFAULT_MSG;
+      break;
+
+    case error.conflict.CODE:
+      statusText = error.conflict.STATUS_TEXT;
+      msg = message || error.conflict.DEFAULT_MSG;
+      break;
+
+    case error.serverError.CODE:
     default:
-      statusCode = 500;
-      statusText = 'SERVER_ERROR';
-      msg = message || 'An unknown error occurred with the request.';
+      statusCode = error.serverError.CODE;
+      statusText = error.serverError.STATUS_TEXT;
+      msg = message || error.serverError.DEFAULT_MSG;
       break;
   }
 

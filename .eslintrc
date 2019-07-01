@@ -7,6 +7,7 @@
   "browser": true
   },
   "rules": {
-    "no-use-before-define": ["error", { "variables": false }]
+    "no-use-before-define": ["error", { "variables": false }],
+    "linebreak-style": 0
   }
 }
