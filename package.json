@@ -4,7 +4,8 @@
   "description": "--",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src",
+    "start": "node src",
+    "start-watch": "nodemon src",
     "eslint": "gulp eslint",
     "precommit": "npm run eslint"
   },
