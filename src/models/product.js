@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const productSchema = mongoose.Schema({
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  section: { type: String, enum: ['Men', 'Women', 'Kids', 'Baby'], required: true },
+  section: { type: String, enum: ['Men', 'Women', 'Boys', 'Girls'], required: true },
   type: {
     type: String,
     enum: ['Shirts', 'Jeans', 'Pants', 'Jackets & Coats', 'Dresses', 'Knitwear', 'Tops',
-      'Skirts', 'Special', 'Newborn', 'Toddler', 'Socks & Accessories'],
+      'Skirts', 'Shoes', 'Tops & T-shirts', 'Jumpsuits', 'Shorts'],
     required: true,
   },
   img: { type: String, required: true },
