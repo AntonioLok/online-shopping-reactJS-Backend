@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const getUser = require('../../controllers/user/getUser');
+const getUser = require('../../controllers/user/get-user');
 const registerUser = require('../../controllers/user/register');
-const generateToken = require('../../controllers/user/generateToken');
+const generateToken = require('../../controllers/user/generate-token');
 const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
 
