@@ -21,7 +21,9 @@ router.post('/', [getTokenFromheader, getDecodedToken], async (req, res) => {
     const { updatedProducts } = req.body;
     await updateCart(userId, updatedProducts);
 
-    responseHandler.handleSuccess(res, success.CODE);
+    const cart = await getCart(userId);
+
+    responseHandler.handleSuccess(res, success.CODE, cart.products);
   } catch (error) {
     responseHandler.handleError(res, serverError.CODE);
   }
