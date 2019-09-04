@@ -2,9 +2,7 @@ const Cart = require('../../models/cart');
 
 const updateCart = async (userId, updatedProducts) => {
   try {
-    const cart = await Cart.updateCart(userId, updatedProducts);
-
-    return cart;
+    return Cart.updateCart(userId, updatedProducts);
   } catch (error) {
     throw new Error(error);
   }

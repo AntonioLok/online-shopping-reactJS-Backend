@@ -14,13 +14,21 @@ const productSchema = mongoose.Schema({
   sizeAvailable: { type: Array, required: true },
 });
 
-productSchema.statics.getProduct = id => productModel.find({ _id: id })
-  .exec()
-  .then(product => product);
+productSchema.statics.getProduct = async (id) => {
+  try {
+    return productModel.find({ _id: id }).exec();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
-productSchema.statics.getProducts = (section, type) => productModel.find({ section, type })
-  .exec()
-  .then(products => products);
+productSchema.statics.getProducts = async (section, type) => {
+  try {
+    return productModel.find({ section, type }).exec();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
 
 const productModel = mongoose.model('Product', productSchema);
 

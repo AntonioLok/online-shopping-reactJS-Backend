@@ -2,9 +2,7 @@ const Cart = require('../../models/cart');
 
 const getCart = async (userId) => {
   try {
-    const cart = await Cart.getCart(userId);
-
-    return cart;
+    return await Cart.getCart(userId);
   } catch (error) {
     throw new Error(error);
   }
