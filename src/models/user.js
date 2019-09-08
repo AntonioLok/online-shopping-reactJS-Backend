@@ -14,16 +14,20 @@ userSchema.statics.generatePasswordHash = async (password) => {
 };
 
 userSchema.statics.validatePassword = async (password, hashedPassword) => {
-  const isPasswordValid = await bcrypt.compare(password, hashedPassword);
-
-  return isPasswordValid;
+  try {
+    return bcrypt.compare(password, hashedPassword);
+  } catch (error) {
+    throw new Error(error);
+  }
 };
 
 userSchema.statics.getUser = async (username) => {
-  const user = await userModel.findOne({ username }).exec();
-  return user;
+  try {
+    return userModel.findOne({ username }).exec();
+  } catch (error) {
+    throw new Error(error);
+  }
 };
-
 
 const userModel = mongoose.model('User', userSchema);
 

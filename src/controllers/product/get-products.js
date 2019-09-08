@@ -2,8 +2,7 @@ const Product = require('../../models/product');
 
 const getProducts = async (section, type) => {
   try {
-    const products = await Product.getProducts(section, type);
-    return products;
+    return Product.getProducts(section, type);
   } catch (error) {
     throw new Error(error);
   }

@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const http = require('http');
 const mongoose = require('mongoose');
 const users = require('./views/routes/users');
 const products = require('./views/routes/products');
+const carts = require('./views/routes/carts');
 
 const app = express();
 
@@ -31,6 +34,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/users', users);
 app.use('/products', products);
+app.use('/carts', carts);
 
 // Set Port
 const port = process.env.PORT || '8000';

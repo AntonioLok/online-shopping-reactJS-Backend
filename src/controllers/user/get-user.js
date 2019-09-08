@@ -2,8 +2,7 @@ const User = require('../../models/user');
 
 const getUser = async (email) => {
   try {
-    const user = await User.getUser(email);
-    return user;
+    return User.getUser(email);
   } catch (error) {
     throw new Error(error);
   }

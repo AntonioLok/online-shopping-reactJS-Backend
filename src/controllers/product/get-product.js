@@ -2,8 +2,7 @@ const Product = require('../../models/product');
 
 const getProduct = async (id) => {
   try {
-    const product = await Product.getProduct(id);
-    return product;
+    return Product.getProduct(id);
   } catch (error) {
     throw new Error(error);
   }
