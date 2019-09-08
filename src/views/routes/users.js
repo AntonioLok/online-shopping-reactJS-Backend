@@ -1,8 +1,10 @@
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 const getUser = require('../../controllers/user/get-user');
 const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
 const responseHandler = require('../../utils/response-handler');
+const JWT_SECRET = require('../../utils/config');
 const constants = require('../../constants');
 
 const {
@@ -22,6 +24,14 @@ const {
     created,
   },
 } = constants.httpResponse;
+
+const {
+  error: {
+    JWT_MALFORMED,
+    JWT_INVALID_SIGNATURE,
+    JWT_EXPIRED,
+  },
+} = constants.jwtResponse;
 
 router.post('/register', async (req, res) => {
   try {
@@ -64,9 +74,34 @@ router.get('/:email', async (req, res) => {
     const { email } = req.params;
     const user = await getUser(email);
 
-    responseHandler.handleSuccess(res, 200, { emailFound: !!user });
+    responseHandler.handleSuccess(res, success.CODE, { emailFound: !!user });
   } catch (error) {
-    responseHandler.handleError(res, 500);
+    responseHandler.handleError(res, serverError.CODE);
+  }
+});
+
+router.get('/validate-token/:token', (req, res) => {
+  try {
+    const { token } = req.params;
+
+    const decodedToken = jwt.verify(token, JWT_SECRET);
+    responseHandler.handleSuccess(res, success.CODE, decodedToken);
+  } catch (error) {
+    const { message } = error;
+
+    switch (message) {
+      case JWT_MALFORMED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_MALFORMED.MSG);
+        break;
+      case JWT_EXPIRED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_EXPIRED.MSG);
+        break;
+      case JWT_INVALID_SIGNATURE.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_INVALID_SIGNATURE.MSG);
+        break;
+      default:
+        responseHandler.handleError(res, serverError.CODE);
+    }
   }
 });
 
