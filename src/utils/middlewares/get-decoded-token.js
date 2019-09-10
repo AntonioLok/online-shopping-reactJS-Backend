@@ -5,9 +5,18 @@ const constants = require('../../constants');
 
 const {
   error: {
-    forbidden,
+    unauthorized,
+    serverError,
   },
 } = constants.httpResponse;
+
+const {
+  error: {
+    JWT_MALFORMED,
+    JWT_INVALID_SIGNATURE,
+    JWT_EXPIRED,
+  },
+} = constants.jwtResponse;
 
 
 const getDecodedToken = (req, res, next) => {
@@ -17,7 +26,21 @@ const getDecodedToken = (req, res, next) => {
     req.decodedToken = decodedToken;
     next();
   } catch (error) {
-    responseHandler.handleError(res, forbidden.CODE);
+    const { message } = error;
+
+    switch (message) {
+      case JWT_MALFORMED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_MALFORMED.MSG);
+        break;
+      case JWT_EXPIRED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_EXPIRED.MSG);
+        break;
+      case JWT_INVALID_SIGNATURE.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_INVALID_SIGNATURE.MSG);
+        break;
+      default:
+        responseHandler.handleError(res, serverError.CODE);
+    }
   }
 };
 
