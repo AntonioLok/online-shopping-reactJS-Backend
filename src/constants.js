@@ -60,6 +60,7 @@ const constants = {
       JWT_MALFORMED: { ERROR: 'jwt malformed', MSG: 'The token received is malformed' },
       JWT_INVALID_SIGNATURE: { ERROR: 'invalid signature', MSG: 'The token received has an invalid signature' },
       JWT_EXPIRED: { ERROR: 'jwt expired', MSG: 'The token received has expired' },
+      JWT_NOT_PROVIDED: { ERROR: 'jwt must be provided', MSG: 'Token was not provided' },
     },
   },
   errorCodes: {
