@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const users = require('./views/routes/users');
 const products = require('./views/routes/products');
 const carts = require('./views/routes/carts');
+const logRequest = require('./utils/middlewares/log-request');
 
 const app = express();
 
@@ -31,6 +32,9 @@ app.use((req, res, next) => {
 // Parsers
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Loggers
+app.use(logRequest);
 
 app.use('/users', users);
 app.use('/products', products);

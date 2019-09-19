@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = require('./../config');
 const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
+const errLogger = require('../error-logger');
 
 const {
   error: {
@@ -17,6 +18,7 @@ const getDecodedToken = (req, res, next) => {
     req.decodedToken = decodedToken;
     next();
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, forbidden.CODE);
   }
 };
