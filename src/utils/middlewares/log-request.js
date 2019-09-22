@@ -1,17 +1,5 @@
-const { createLogger, format, transports } = require('winston');
-
-function customFormat() {
-  const { printf } = format;
-
-  return printf((info) => {
-    const { message, level } = info;
-    const { req } = message;
-    const { url, method } = req;
-    const currentTimestamp = (new Date()).toISOString();
-    return `${currentTimestamp} ${level}: ${method} ${url}`;
-  });
-}
-
+const { createLogger, transports } = require('winston');
+const customFormat = require('../logger-custom-format');
 
 const logger = createLogger({
   transports: [
