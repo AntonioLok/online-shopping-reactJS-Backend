@@ -3,6 +3,7 @@ const getProduct = require('../../controllers/product/get-product');
 const getProducts = require('../../controllers/product/get-products');
 const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
+const errLogger = require('../../utils/error-logger');
 
 const {
   error: {
@@ -20,6 +21,7 @@ router.get('/:id', async (req, res) => {
 
     responseHandler.handleSuccess(res, success.CODE, product[0]);
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, serverError.CODE);
   }
 });
@@ -31,6 +33,7 @@ router.get('/:section/:type', async (req, res) => {
 
     responseHandler.handleSuccess(res, success.CODE, products);
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, serverError.CODE);
   }
 });

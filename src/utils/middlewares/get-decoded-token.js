@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const JWT_SECRET = require('./../config');
 const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
+const errLogger = require('../error-logger');
 
 const {
   error: {
@@ -28,6 +29,7 @@ const getDecodedToken = (req, res, next) => {
     next();
   } catch (error) {
     const { message } = error;
+    errLogger.error(error);
 
     switch (message) {
       case JWT_NOT_PROVIDED.ERROR:

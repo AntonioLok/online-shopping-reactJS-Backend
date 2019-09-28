@@ -4,6 +4,7 @@ const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
 const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
+const errLogger = require('../../utils/error-logger');
 
 const {
   AUTH__EMAIL_DOES_NOT_EXIST,
@@ -30,6 +31,7 @@ router.post('/register', async (req, res) => {
     responseHandler.handleSuccess(res, created.CODE);
   } catch (error) {
     const { message } = error;
+    errLogger.error(error);
 
     if (message.includes(AUTH__EMAIL_ALREADY_IN_USE)) {
       responseHandler.handleError(res, conflict.CODE);
@@ -48,6 +50,7 @@ router.post('/login', async (req, res) => {
     responseHandler.handleSuccess(res, success.CODE, token);
   } catch (error) {
     const { message } = error;
+    errLogger.error(error);
 
     if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)
       || message.includes(AUTH__PASSWORD_DOES_NOT_MATCH)) {
@@ -66,6 +69,7 @@ router.get('/:email', async (req, res) => {
 
     responseHandler.handleSuccess(res, 200, { emailFound: !!user });
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, 500);
   }
 });

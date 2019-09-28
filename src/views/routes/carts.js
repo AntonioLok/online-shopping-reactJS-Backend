@@ -5,6 +5,7 @@ const responseHandler = require('../../utils/response-handler');
 const constants = require('../../constants');
 const getTokenFromheader = require('../../utils/middlewares/get-token-from-header');
 const getDecodedToken = require('../../utils/middlewares/get-decoded-token');
+const errLogger = require('../../utils/error-logger');
 
 const {
   error: {
@@ -25,6 +26,7 @@ router.post('/', [getTokenFromheader, getDecodedToken], async (req, res) => {
 
     responseHandler.handleSuccess(res, success.CODE, cart.products);
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, serverError.CODE);
   }
 });
@@ -37,6 +39,7 @@ router.get('/', [getTokenFromheader, getDecodedToken], async (req, res) => {
 
     responseHandler.handleSuccess(res, success.CODE, cart.products);
   } catch (error) {
+    errLogger.error(error);
     responseHandler.handleError(res, error);
   }
 });
