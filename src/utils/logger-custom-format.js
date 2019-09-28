@@ -9,7 +9,6 @@ const customFormat = () => {
     const { level, message } = info;
 
     if (info instanceof Error) {
-      // the first 8 are related to winston functions
       const site = _.get(stack(), [9]);
       return `${level}: ${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
     }
