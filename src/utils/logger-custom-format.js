@@ -1,15 +1,17 @@
 const { format } = require('winston');
+const stack = require('callsite');
+const _ = require('lodash');
 
 const customFormat = () => {
   const { printf } = format;
 
   return printf((info) => {
-    const {
-      level, message, stack,
-    } = info;
+    const { level, message } = info;
 
     if (info instanceof Error) {
-      return `${level} - ${stack}`;
+      // the first 8 are related to winston functions
+      const site = _.get(stack(), [9]);
+      return `${level}: ${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
     }
 
     const { req } = message;
