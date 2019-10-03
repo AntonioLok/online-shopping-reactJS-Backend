@@ -2,17 +2,20 @@ const { format } = require('winston');
 const stack = require('callsite');
 const _ = require('lodash');
 
-const customFormat = () => {
+const customFormatLoggerUtility = () => {
+  const { printf } = format;
+  return printf((info) => {
+    const { level } = info;
+    const site = _.get(stack(), [9]);
+    return `${level}: ${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
+  });
+};
+
+const customFormatLoggerMiddleware = () => {
   const { printf } = format;
 
   return printf((info) => {
     const { level, message } = info;
-
-    if (info instanceof Error) {
-      const site = _.get(stack(), [9]);
-      return `${level}: ${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
-    }
-
     const { req } = message;
     const { url, method } = req;
     const currentTimestamp = (new Date()).toISOString();
@@ -20,4 +23,4 @@ const customFormat = () => {
   });
 };
 
-module.exports = customFormat;
+module.exports = { customFormatLoggerMiddleware, customFormatLoggerUtility };

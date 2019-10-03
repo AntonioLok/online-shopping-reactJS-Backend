@@ -1,11 +1,11 @@
 const { createLogger, transports } = require('winston');
-const customFormat = require('../logger-custom-format');
+const { customFormatLoggerMiddleware } = require('../logger-custom-format');
 
 const logger = createLogger({
   transports: [
     new transports.Console({
       stringify: true,
-      format: customFormat(),
+      format: customFormatLoggerMiddleware(),
       level: 'info',
     }),
   ],
