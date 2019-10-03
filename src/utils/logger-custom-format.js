@@ -1,13 +1,16 @@
 const { format } = require('winston');
 const stack = require('callsite');
 const _ = require('lodash');
+const chalk = require('chalk');
 
 const customFormatLoggerUtility = () => {
   const { printf } = format;
   return printf((info) => {
-    const { level } = info;
-    const site = _.get(stack(), [9]);
-    return `${level}: ${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
+    const { level, message } = info;
+    const color = { info: 'white', warn: 'yellow', error: 'red' };
+    const site = _.get(stack(), [10]);
+    const context = `${site.getFunctionName() || 'anonymous'} ${site.getFileName()} ${site.getLineNumber()}`;
+    return `${level} ${chalk[color[level]](message)} ${chalk.gray(context)}`;
   });
 };
 
