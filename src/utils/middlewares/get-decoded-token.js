@@ -6,9 +6,19 @@ const logger = require('../../utils/logger');
 
 const {
   error: {
-    forbidden,
+    unauthorized,
+    serverError,
   },
 } = constants.httpResponse;
+
+const {
+  error: {
+    JWT_MALFORMED,
+    JWT_INVALID_SIGNATURE,
+    JWT_EXPIRED,
+    JWT_NOT_PROVIDED,
+  },
+} = constants.jwtResponse;
 
 
 const getDecodedToken = (req, res, next) => {
@@ -19,7 +29,25 @@ const getDecodedToken = (req, res, next) => {
     next();
   } catch (error) {
     logger.error(error);
-    responseHandler.handleError(res, forbidden.CODE);
+
+    const { message } = error;
+
+    switch (message) {
+      case JWT_NOT_PROVIDED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_NOT_PROVIDED.MSG);
+        break;
+      case JWT_MALFORMED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_MALFORMED.MSG);
+        break;
+      case JWT_EXPIRED.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_EXPIRED.MSG);
+        break;
+      case JWT_INVALID_SIGNATURE.ERROR:
+        responseHandler.handleError(res, unauthorized.CODE, JWT_INVALID_SIGNATURE.MSG);
+        break;
+      default:
+        responseHandler.handleError(res, serverError.CODE);
+    }
   }
 };
 
