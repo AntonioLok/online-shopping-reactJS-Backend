@@ -30,7 +30,6 @@ The pre-commit message follows the [Conventional Commits specification](https://
 The commit message should be structured as follows: `<type>[optional scope]: <description>`
 Where type must be one of [build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test]
 
-
 ### pre-commit
 Before each commit, only code quality (eslint) checks will be made. 
 The following command will be run:
