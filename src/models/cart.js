@@ -6,6 +6,9 @@ const cartSchema = mongoose.Schema({
     _id: { type: String, required: true },
     size: { type: String, enum: ['S', 'M', 'L', 'XL'] },
     quantity: { type: Number, required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    img: { type: String, required: true },
   }],
 }, { minimize: false });
 
