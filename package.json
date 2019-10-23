@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node src",
     "start-watch": "nodemon src",
-    "eslint": "gulp eslint",
-    "precommit": "npm run eslint"
+    "eslint": "gulp eslint"
   },
   "repository": {
     "type": "git",
@@ -29,6 +28,8 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "8.2.0",
+    "@commitlint/config-conventional": "8.2.0",
     "babel-eslint": "10.0.1",
     "eslint": "5.6.0",
     "eslint-config-airbnb": "17.1.0",
