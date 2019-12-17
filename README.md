@@ -11,9 +11,11 @@
 #### Environment variables
 In development, create a .env file in the root directory to store environment variables for your development and add the following variables:
 
-| Variable        | Required | Default     | Description                                                 |
-|-----------------|----------|-------------|-------------------------------------------------------------|
-| JWT_SECRET      | YES      |             | Secret used to sign and verify tokens for authentication    |
+| Variable        | Required | Default  | Description                                                                           |
+|-----------------|----------|----------|---------------------------------------------------------------------------------------|
+| JWT_SECRET      | YES      |          | Secret used to sign and verify tokens for authentication                              |
+| EMAIL_ADDRESS   | YES      |          | Email address used to send the email with the password recovery link                  |
+| EMAIL_PASSWORD  | YES      |          | Password for the email address used to send the email with the password recovery link |
 
 ## Development
 To start the server, simply run `npm run start` or `JWT_SECRET=secret npm run start` if you would like to set the required environment variable via command line. Replace `secret` with your own secret.

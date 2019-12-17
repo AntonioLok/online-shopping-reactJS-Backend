@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const userSchema = mongoose.Schema({
   username: { type: String, required: true, index: { unique: true, dropDups: true } },
   password: { type: String, required: true },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Number },
 });
 
 userSchema.statics.generatePasswordHash = async (password) => {
@@ -21,9 +23,18 @@ userSchema.statics.validatePassword = async (password, hashedPassword) => {
   }
 };
 
-userSchema.statics.getUser = async (username) => {
+userSchema.statics.getUser = async (...fields) => {
   try {
-    return userModel.findOne({ username }).exec();
+    return userModel.findOne(...fields).exec();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+userSchema.statics.updateUser = async (username, ...fields) => {
+  try {
+    const newFieldsValue = { $set: fields[0] };
+    userModel.updateOne({ username }, newFieldsValue).exec();
   } catch (error) {
     throw new Error(error);
   }

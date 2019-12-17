@@ -1,5 +1,7 @@
 const router = require('express').Router();
+const sendRecoveryEmail = require('../../controllers/user/send-recovery-email');
 const getUser = require('../../controllers/user/get-user');
+const updateUser = require('../../controllers/user/update-user');
 const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
 const responseHandler = require('../../utils/response-handler');
@@ -10,13 +12,16 @@ const {
   AUTH__EMAIL_DOES_NOT_EXIST,
   AUTH__PASSWORD_DOES_NOT_MATCH,
   AUTH__EMAIL_ALREADY_IN_USE,
+  PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
 } = constants.errorCodes;
 
 const {
   error: {
-    unauthorized,
+    badRequest,
     conflict,
+    notFound,
     serverError,
+    unauthorized,
   },
   success: {
     success,
@@ -61,16 +66,66 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-router.get('/:email', async (req, res) => {
+router.get('/:username', async (req, res) => {
   try {
-    const { email } = req.params;
-    const user = await getUser(email);
+    const { username } = req.params;
+    await getUser({ username });
 
-    responseHandler.handleSuccess(res, 200, { emailFound: !!user });
+    responseHandler.handleSuccess(res, success.CODE);
   } catch (error) {
+    const { message } = error;
     errLogger.error(error);
-    responseHandler.handleError(res, 500);
+
+    if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)) {
+      responseHandler.handleError(res, notFound.CODE);
+    } else {
+      responseHandler.handleError(res, serverError.CODE);
+    }
+  }
+});
+
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    await sendRecoveryEmail(username);
+    responseHandler.handleSuccess(res, success.CODE);
+  } catch (error) {
+    const { message } = error;
+    errLogger.error(error);
+
+    if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)) {
+      responseHandler.handleError(res, badRequest.CODE);
+    } else {
+      responseHandler.handleError(res, serverError.CODE);
+    }
+  }
+});
+
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    const user = await getUser({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    await updateUser(user.username,
+      {
+        password: newPassword,
+        resetPasswordExpires: Date.now(),
+      });
+
+    responseHandler.handleSuccess(res, success.CODE);
+  } catch (error) {
+    const { message } = error;
+    errLogger.error(error);
+
+    if (message.includes(PASSWORD_RESET_LINK_INVALID_OR_EXPIRED)) {
+      responseHandler.handleError(res, unauthorized.CODE);
+    } else {
+      responseHandler.handleError(res, serverError.CODE);
+    }
   }
 });
 
