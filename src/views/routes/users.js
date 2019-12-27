@@ -12,7 +12,7 @@ const {
   AUTH__EMAIL_DOES_NOT_EXIST,
   AUTH__PASSWORD_DOES_NOT_MATCH,
   AUTH__EMAIL_ALREADY_IN_USE,
-  PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
+  AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
 } = constants.errorCodes;
 
 const {
@@ -121,7 +121,7 @@ router.post('/reset-password', async (req, res) => {
     const { message } = error;
     errLogger.error(error);
 
-    if (message.includes(PASSWORD_RESET_LINK_INVALID_OR_EXPIRED)) {
+    if (message.includes(AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED)) {
       responseHandler.handleError(res, unauthorized.CODE);
     } else {
       responseHandler.handleError(res, serverError.CODE);
