@@ -69,9 +69,9 @@ router.post('/login', async (req, res) => {
 router.get('/:username', async (req, res) => {
   try {
     const { username } = req.params;
-    await getUser({ username });
+    const user = await getUser({ username });
 
-    responseHandler.handleSuccess(res, success.CODE);
+    responseHandler.handleSuccess(res, success.CODE, user.username);
   } catch (error) {
     const { message } = error;
     errLogger.error(error);
