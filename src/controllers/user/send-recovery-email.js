@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const getUser = require('../user/get-user');
 const updateUser = require('../user/update-user');
-const WEB_APP_BASE_URL = require('../../settings');
+const { WEB_APP_BASE_URL } = require('../../settings');
 
 const sendRecoveryEmail = async (username) => {
   try {
