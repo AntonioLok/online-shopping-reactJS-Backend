@@ -9,7 +9,7 @@ const sendRecoveryEmail = async (username) => {
     await getUser({ username });
 
     const token = crypto.randomBytes(20).toString('hex');
-    const { EMAIL_ADDRESS, EMAIL_PASSWORD } = process.env;
+    const { NODEMAILER_TRANSPORTER_USERNAME, NODEMAILER_TRANSPORTER_PASSWORD } = process.env;
 
     await updateUser(username, {
       resetPasswordToken: token,
@@ -19,8 +19,8 @@ const sendRecoveryEmail = async (username) => {
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: EMAIL_ADDRESS,
-        pass: EMAIL_PASSWORD,
+        user: NODEMAILER_TRANSPORTER_USERNAME,
+        pass: NODEMAILER_TRANSPORTER_PASSWORD,
       },
     });
 
