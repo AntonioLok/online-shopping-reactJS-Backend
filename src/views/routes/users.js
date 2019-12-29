@@ -104,8 +104,9 @@ router.post('/forgot-password', async (req, res) => {
 
 router.post('/reset-password', async (req, res) => {
   try {
-    const { token, newPassword } = req.body;
+    const { username, token, newPassword } = req.body;
     const user = await getUser({
+      username,
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     });
