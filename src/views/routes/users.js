@@ -105,16 +105,17 @@ router.post('/forgot-password', async (req, res) => {
 router.post('/reset-password', async (req, res) => {
   try {
     const { username, token, newPassword } = req.body;
+    const currentDate = new Date();
     const user = await getUser({
       username,
       resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() },
+      resetPasswordExpires: { $gt: currentDate },
     });
 
     await updateUser(user.username,
       {
         password: newPassword,
-        resetPasswordExpires: Date.now(),
+        resetPasswordExpires: currentDate,
       });
 
     responseHandler.handleSuccess(res, success.CODE);

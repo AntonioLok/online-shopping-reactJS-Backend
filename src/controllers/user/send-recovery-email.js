@@ -10,10 +10,12 @@ const sendRecoveryEmail = async (username) => {
 
     const token = crypto.randomBytes(20).toString('hex');
     const { NODEMAILER_TRANSPORTER_USERNAME, NODEMAILER_TRANSPORTER_PASSWORD } = process.env;
+    const expirationDate = new Date();
+    expirationDate.setHours(expirationDate.getHours() + 1);
 
     await updateUser(username, {
       resetPasswordToken: token,
-      resetPasswordExpires: Date.now() + 3600000, // 3600000 ms = 1 hour
+      resetPasswordExpires: expirationDate,
     });
 
     const transporter = nodemailer.createTransport({

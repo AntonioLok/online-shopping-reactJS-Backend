@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   username: { type: String, required: true, index: { unique: true, dropDups: true } },
   password: { type: String, required: true },
   resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Number },
+  resetPasswordExpires: { type: Date },
 });
 
 userSchema.statics.generatePasswordHash = async (password) => {
