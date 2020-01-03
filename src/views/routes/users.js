@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const sendRecoveryEmail = require('../../controllers/user/send-recovery-email');
 const getUser = require('../../controllers/user/get-user');
-const updateUser = require('../../controllers/user/update-user');
+const changeUserPassword = require('../../controllers/user/change-user-password');
 const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
 const responseHandler = require('../../utils/response-handler');
@@ -112,11 +112,7 @@ router.post('/reset-password', async (req, res) => {
       resetPasswordExpires: { $gt: currentDate },
     });
 
-    await updateUser(user.username,
-      {
-        password: newPassword,
-        resetPasswordExpires: currentDate,
-      });
+    await changeUserPassword(user.username, newPassword, currentDate);
 
     responseHandler.handleSuccess(res, success.CODE);
   } catch (error) {
