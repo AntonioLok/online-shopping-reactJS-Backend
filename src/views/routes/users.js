@@ -9,7 +9,7 @@ const constants = require('../../constants');
 const errLogger = require('../../utils/error-logger');
 
 const {
-  AUTH__EMAIL_DOES_NOT_EXIST,
+  AUTH__USER_DOES_NOT_EXIST,
   AUTH__PASSWORD_DOES_NOT_MATCH,
   AUTH__EMAIL_ALREADY_IN_USE,
   AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
@@ -57,7 +57,7 @@ router.post('/login', async (req, res) => {
     const { message } = error;
     errLogger.error(error);
 
-    if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)
+    if (message.includes(AUTH__USER_DOES_NOT_EXIST)
       || message.includes(AUTH__PASSWORD_DOES_NOT_MATCH)) {
       responseHandler.handleError(res, unauthorized.CODE);
     } else {
@@ -76,7 +76,7 @@ router.get('/:username', async (req, res) => {
     const { message } = error;
     errLogger.error(error);
 
-    if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)) {
+    if (message.includes(AUTH__USER_DOES_NOT_EXIST)) {
       responseHandler.handleError(res, notFound.CODE);
     } else {
       responseHandler.handleError(res, serverError.CODE);
@@ -94,7 +94,7 @@ router.post('/forgot-password', async (req, res) => {
     const { message } = error;
     errLogger.error(error);
 
-    if (message.includes(AUTH__EMAIL_DOES_NOT_EXIST)) {
+    if (message.includes(AUTH__USER_DOES_NOT_EXIST)) {
       responseHandler.handleError(res, badRequest.CODE);
     } else {
       responseHandler.handleError(res, serverError.CODE);
