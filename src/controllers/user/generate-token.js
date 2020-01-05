@@ -10,7 +10,7 @@ const {
 
 const generateToken = async (username, password) => {
   try {
-    const user = await getUser({ username });
+    const user = await getUser(username);
     const hashedPassword = user.password;
     const isPasswordValid = await User.validatePassword(password, hashedPassword);
 

@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const sendRecoveryEmail = require('../../controllers/user/send-recovery-email');
 const getUser = require('../../controllers/user/get-user');
+const validateResetPasswordToken = require('../../controllers/user/validate-reset-password-token');
 const changeUserPassword = require('../../controllers/user/change-user-password');
 const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
@@ -31,8 +32,8 @@ const {
 
 router.post('/register', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    await registerUser(email.toLowerCase(), password);
+    const { username, password } = req.body;
+    await registerUser(username.toLowerCase(), password);
     responseHandler.handleSuccess(res, created.CODE);
   } catch (error) {
     const { message } = error;
@@ -49,8 +50,8 @@ router.post('/register', async (req, res) => {
 // eslint-disable-next-line consistent-return
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const token = await generateToken(email, password);
+    const { username, password } = req.body;
+    const token = await generateToken(username, password);
 
     responseHandler.handleSuccess(res, success.CODE, token);
   } catch (error) {
@@ -69,7 +70,7 @@ router.post('/login', async (req, res) => {
 router.get('/:username', async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await getUser({ username });
+    const user = await getUser(username);
 
     responseHandler.handleSuccess(res, success.CODE, user.username);
   } catch (error) {
@@ -106,13 +107,9 @@ router.post('/reset-password', async (req, res) => {
   try {
     const { username, token, newPassword } = req.body;
     const currentDate = new Date();
-    const user = await getUser({
-      username,
-      resetPasswordToken: token,
-      resetPasswordExpires: { $gt: currentDate },
-    });
+    await validateResetPasswordToken(username, token, currentDate);
 
-    await changeUserPassword(user.username, newPassword, currentDate);
+    await changeUserPassword(username, newPassword, currentDate);
 
     responseHandler.handleSuccess(res, success.CODE);
   } catch (error) {

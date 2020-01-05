@@ -3,18 +3,14 @@ const constants = require('../../constants');
 
 const {
   AUTH__USER_DOES_NOT_EXIST,
-  AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
 } = constants.errorCodes;
 
-const getUser = async (...fields) => {
+const getUser = async (username) => {
   try {
-    const user = await User.getUser(...fields);
+    const user = await User.getUser({ username });
+
     if (!user) {
-      if (Object.keys(...fields).includes('resetPasswordToken')) {
-        throw new Error(AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED);
-      } else {
-        throw new Error(AUTH__USER_DOES_NOT_EXIST);
-      }
+      throw new Error(AUTH__USER_DOES_NOT_EXIST);
     }
 
     return user;
