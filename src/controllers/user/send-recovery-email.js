@@ -2,14 +2,13 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const getUser = require('../user/get-user');
 const updateUser = require('../user/update-user');
-const { WEB_APP_BASE_URL } = require('../../settings');
+const { WEB_APP_BASE_URL, NODEMAILER_TRANSPORTER_USERNAME, NODEMAILER_TRANSPORTER_PASSWORD } = require('../../settings');
 
 const sendRecoveryEmail = async (username) => {
   try {
     await getUser(username);
 
     const token = crypto.randomBytes(20).toString('hex');
-    const { NODEMAILER_TRANSPORTER_USERNAME, NODEMAILER_TRANSPORTER_PASSWORD } = process.env;
     const expirationDate = new Date();
     expirationDate.setHours(expirationDate.getHours() + 1);
 
