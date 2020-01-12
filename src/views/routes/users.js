@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const sendRecoveryEmail = require('../../controllers/user/send-recovery-email');
 const getUser = require('../../controllers/user/get-user');
-const validateResetPasswordToken = require('../../controllers/user/validate-reset-password-token');
 const changeUserPassword = require('../../controllers/user/change-user-password');
 const registerUser = require('../../controllers/user/register');
 const generateToken = require('../../controllers/user/generate-token');
@@ -72,7 +71,7 @@ router.get('/:username', async (req, res) => {
     const { username } = req.params;
     const user = await getUser(username);
 
-    responseHandler.handleSuccess(res, success.CODE, user.username);
+    responseHandler.handleSuccess(res, success.CODE, { username: user.username });
   } catch (error) {
     const { message } = error;
     errLogger.error(error);
@@ -107,9 +106,8 @@ router.post('/reset-password', async (req, res) => {
   try {
     const { username, token, newPassword } = req.body;
     const currentDate = new Date();
-    await validateResetPasswordToken(username, token, currentDate);
 
-    await changeUserPassword(username, newPassword, currentDate);
+    await changeUserPassword(username, newPassword, token, currentDate);
 
     responseHandler.handleSuccess(res, success.CODE);
   } catch (error) {
