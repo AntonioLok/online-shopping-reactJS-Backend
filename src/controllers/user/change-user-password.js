@@ -5,20 +5,20 @@ const {
   AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED,
 } = constants.errorCodes;
 
-const changeUserPassword = async (username, password, resetPasswordToken, currentDate) => {
+const changeUserPassword = async (username, password, resetPasswordToken) => {
   try {
     const user = await User.getUser({
       username,
       resetPasswordToken,
-      resetPasswordExpires: { $gt: currentDate },
+      resetPasswordExpires: { $gt: new Date() },
     });
 
     if (!user) {
       throw new Error(AUTH__PASSWORD_RESET_LINK_INVALID_OR_EXPIRED);
     }
 
-    const hashedPassword = await User.generatePasswordHash(password);
-    User.updateUser(username, { password: hashedPassword, currentDate });
+    user.password = password;
+    user.save();
   } catch (error) {
     throw new Error(error);
   }
