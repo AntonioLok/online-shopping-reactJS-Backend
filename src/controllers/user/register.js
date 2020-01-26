@@ -12,7 +12,7 @@ const register = async (username, password) => {
   try {
     const newUser = new User();
     newUser.username = username;
-    newUser.password = await User.generatePasswordHash(password);
+    newUser.password = password;
     const newCart = new Cart({ username: newUser.username });
 
     await newUser.save();
